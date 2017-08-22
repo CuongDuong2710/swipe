@@ -6,7 +6,9 @@ import {
   Dimensions
 } from 'react-native'
 
+// Set out some minimum threshold some amount to say if you drag the card just a little bit and let go.
 const SCREEN_WIDTH = Dimensions.get('window').width
+const SWIPE_THRESHOLD = 0.25 * SCREEN_WIDTH
 
 class Deck extends Component {
   constructor (props) {
@@ -16,14 +18,21 @@ class Deck extends Component {
     const position = new Animated.ValueXY()
 
     // It means that we want this instance of the responder to be responsible for the user pressing on the screen.
+    // 'gesture' object to read off the distance that the user dragged the card to left or right
     const panResponder = PanResponder.create({
       onStartShouldSetPanResponder: () => true,
       onPanResponderMove: (event, gesture) => {
         // update 'position' by 'dx', 'dy'
         position.setValue({ x: gesture.dx, y: gesture.dy })
       },
-      onPanResponderRelease: () => {
-        this.resetPosition()
+      onPanResponderRelease: (event, gesture) => {
+        if (gesture.dx > SWIPE_THRESHOLD) {
+          console.log('swipe right!')
+        } else if (gesture.dx < -SWIPE_THRESHOLD) {
+          console.log('swipe left!')
+        } else {
+          this.resetPosition()
+        }
       }
     })
 
