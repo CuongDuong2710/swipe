@@ -27,10 +27,16 @@ class Deck extends Component {
   }
 
   getCardStyle () {
+    const { position } = this.state
+    const rotate = position.x.interpolate({
+      inputRange: [-500, 0, 500],
+      outputRange: ['-120deg', '0deg', '120deg']
+    })
+
     return {
       // spread operator to take all the different properties out of this getLayout()
-      ...this.state.position.getLayout(),
-      transform: [{ rotate: '-45deg' }]
+      ...position.getLayout(),
+      transform: [{ rotate }]
     }
   }
 
