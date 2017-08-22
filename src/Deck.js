@@ -26,6 +26,14 @@ class Deck extends Component {
     this.state = { panResponder, position }
   }
 
+  getCardStyle () {
+    return {
+      // spread operator to take all the different properties out of this getLayout()
+      ...this.state.position.getLayout(),
+      transform: [{ rotate: '-45deg' }]
+    }
+  }
+
   // Take a list of data and for every element in that array it calls render card.
   renderCards () {
     // console.log(this.props)
@@ -33,7 +41,8 @@ class Deck extends Component {
       if (index === 0) {
         return (
           <Animated.View
-            style={this.state.position.getLayout()}
+            key={item.id}
+            style={this.getCardStyle()}
             {...this.state.panResponder.panHandlers}
           >
             {this.props.renderCard(item)}
