@@ -22,11 +22,19 @@ class Deck extends Component {
         // update 'position' by 'dx', 'dy'
         position.setValue({ x: gesture.dx, y: gesture.dy })
       },
-      onPanResponderRelease: () => {}
+      onPanResponderRelease: () => {
+        this.resetPosition()
+      }
     })
 
     // stick panResponder and position into state
     this.state = { panResponder, position }
+  }
+
+  resetPosition () {
+    Animated.spring(this.state.position, {
+      toValue: { x: 0, y: 0 }
+    }).start()
   }
 
   // 'SCREEN_WIDTH * 1.5': that's going to say it takes a lot more distances to get all the way to 120 degress of rotation
