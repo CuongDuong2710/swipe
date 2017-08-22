@@ -2,8 +2,11 @@ import React, { Component } from 'react'
 import {
   View,
   Animated,
-  PanResponder
+  PanResponder,
+  Dimensions
 } from 'react-native'
+
+const SCREEN_WIDTH = Dimensions.get('window').width
 
 class Deck extends Component {
   constructor (props) {
@@ -26,10 +29,11 @@ class Deck extends Component {
     this.state = { panResponder, position }
   }
 
+  // 'SCREEN_WIDTH * 1.5': that's going to say it takes a lot more distances to get all the way to 120 degress of rotation
   getCardStyle () {
     const { position } = this.state
     const rotate = position.x.interpolate({
-      inputRange: [-500, 0, 500],
+      inputRange: [-SCREEN_WIDTH * 1.5, 0, SCREEN_WIDTH * 1.5],
       outputRange: ['-120deg', '0deg', '120deg']
     })
 
