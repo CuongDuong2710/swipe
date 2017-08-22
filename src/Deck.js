@@ -9,22 +9,37 @@ class Deck extends Component {
   constructor (props) {
     super(props)
 
+    // declare position to update animation
+    const position = new Animated.ValueXY()
+
     // It means that we want this instance of the responder to be responsible for the user pressing on the screen.
     const panResponder = PanResponder.create({
       onStartShouldSetPanResponder: () => true,
       onPanResponderMove: (event, gesture) => {
-        console.log(gesture)
+        // update 'position' by 'dx', 'dy'
+        position.setValue({ x: gesture.dx, y: gesture.dy })
       },
       onPanResponderRelease: () => {}
     })
 
-    this.state = { panResponder }
+    // stick panResponder and position into state
+    this.state = { panResponder, position }
   }
 
   // Take a list of data and for every element in that array it calls render card.
-  renderCard () {
-    console.log(this.props)
-    return this.props.data.map(item => {
+  renderCards () {
+    // console.log(this.props)
+    return this.props.data.map((item, index) => {
+      if (index === 0) {
+        return (
+          <Animated.View
+            style={this.state.position.getLayout()}
+            {...this.state.panResponder.panHandlers}
+          >
+            {this.props.renderCard(item)}
+          </Animated.View>
+        )
+      }
       return this.props.renderCard(item)
     })
   }
@@ -32,8 +47,8 @@ class Deck extends Component {
   // 'panHandlers' is an object has a bunch of different callbacks that help intercept (ngăn lại) presses from a user by using the dot dot dot syntax right here. 
   render () {
     return (
-      <View {...this.state.panResponder.panHandlers}>
-        {this.renderCard()}
+      <View>
+        {this.renderCards()}
       </View>
     )
   }
