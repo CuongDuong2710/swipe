@@ -27,6 +27,7 @@ class Deck extends Component {
         position.setValue({ x: gesture.dx, y: gesture.dy })
       },
       onPanResponderRelease: (event, gesture) => {
+        // when user drags screen greater than 1/4 screen width left or right
         if (gesture.dx > SWIPE_THRESHOLD) {
           this.forceSwipe('right')
         } else if (gesture.dx < -SWIPE_THRESHOLD) {
@@ -41,14 +42,22 @@ class Deck extends Component {
     this.state = { panResponder, position }
   }
 
+  // force swipe left or right in 250 miliseconds
   forceSwipe (direction) {
     const x = direction === 'right' ? SCREEN_WIDTH : -SCREEN_WIDTH
     Animated.timing(this.state.position, {
       toValue: { x, y: 0 },
       duration: SWIPE_OUT_DURATION
-    }).start()
+    }).start(() => this.onSwipeComplete(direction))
   }
 
+  onSwipeComplete (direction) {
+    const { onSwipeLeft, onSwipeRight } = this.props
+
+    direction === 'right' ? onSwipeRight() : onSwipeLeft()
+  }
+
+  // Reset card's position to zero
   resetPosition () {
     Animated.spring(this.state.position, {
       toValue: { x: 0, y: 0 }
