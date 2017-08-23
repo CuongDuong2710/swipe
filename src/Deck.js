@@ -16,7 +16,7 @@ class Deck extends Component {
     onSwipeRight: () => {},
     onSwipeLeft: () => {}
   }
-  
+
   constructor (props) {
     super(props)
 
@@ -62,6 +62,12 @@ class Deck extends Component {
     const item = data[this.state.index] // retrive the record we were currently swiping
 
     direction === 'right' ? onSwipeRight(item) : onSwipeLeft(item)
+    // We're not modifying the existing value
+    // Reset position before attaching it to next card
+    this.setState.position.setValue({ x: 0, y: 0 })
+    // this.setState.index++
+    // We are resetting it through the use of state
+    this.setState({ index: this.setState.index + 1 })
   }
 
   // Reset card's position to zero
