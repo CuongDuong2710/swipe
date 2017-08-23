@@ -3,7 +3,9 @@ import {
   View,
   Animated,
   PanResponder,
-  Dimensions
+  Dimensions,
+  LayoutAnimation,
+  UIManager
 } from 'react-native'
 
 // Set out some minimum threshold some amount to say if you drag the card just a little bit and let go.
@@ -45,6 +47,11 @@ class Deck extends Component {
 
     // stick panResponder, position and index into state
     this.state = { panResponder, position, index: 0 }
+  }
+
+  componentWillUpdate () {
+    UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true)
+    LayoutAnimation.spring()
   }
 
   // force swipe left or right in 250 miliseconds
