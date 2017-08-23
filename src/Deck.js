@@ -62,12 +62,14 @@ class Deck extends Component {
     const item = data[this.state.index] // retrive the record we were currently swiping
 
     direction === 'right' ? onSwipeRight(item) : onSwipeLeft(item)
-    // We're not modifying the existing value
+    
+    // We're not modifying the existing value 
     // Reset position before attaching it to next card
-    this.setState.position.setValue({ x: 0, y: 0 })
+    this.state.position.setValue({ x: 0, y: 0 }) 
+    
     // this.setState.index++
     // We are resetting it through the use of state
-    this.setState({ index: this.setState.index + 1 })
+    this.setState({ index: this.state.index + 1 })
   }
 
   // Reset card's position to zero
@@ -95,8 +97,11 @@ class Deck extends Component {
   // Take a list of data and for every element in that array it calls render card.
   renderCards () {
     // console.log(this.props)
-    return this.props.data.map((item, index) => {
-      if (index === 0) {
+    return this.props.data.map((item, i) => {
+      if (i < this.state.index) { return null } // if 'i' less than current index return null, not render card
+
+      // render Animated.View for the card at 'index'
+      if (i === this.state.index) {
         return (
           <Animated.View
             key={item.id}
@@ -107,6 +112,7 @@ class Deck extends Component {
           </Animated.View>
         )
       }
+      // render all another cards below
       return this.props.renderCard(item)
     })
   }
