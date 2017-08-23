@@ -38,8 +38,8 @@ class Deck extends Component {
       }
     })
 
-    // stick panResponder and position into state
-    this.state = { panResponder, position }
+    // stick panResponder, position and index into state
+    this.state = { panResponder, position, index: 0 }
   }
 
   // force swipe left or right in 250 miliseconds
@@ -51,10 +51,12 @@ class Deck extends Component {
     }).start(() => this.onSwipeComplete(direction))
   }
 
+  // swipe complete next card
   onSwipeComplete (direction) {
-    const { onSwipeLeft, onSwipeRight } = this.props
+    const { onSwipeLeft, onSwipeRight, data } = this.props
+    const item = data[this.state.index] // retrive the record we were currently swiping
 
-    direction === 'right' ? onSwipeRight() : onSwipeLeft()
+    direction === 'right' ? onSwipeRight(item) : onSwipeLeft(item)
   }
 
   // Reset card's position to zero
