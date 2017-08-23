@@ -96,6 +96,11 @@ class Deck extends Component {
 
   // Take a list of data and for every element in that array it calls render card.
   renderCards () {
+    // if no more cards
+    if (this.state.index >= this.props.data.length) {
+      return this.props.renderNoMoreCards()
+    }
+
     // console.log(this.props)
     return this.props.data.map((item, i) => {
       if (i < this.state.index) { return null } // if 'i' less than current index return null, not render card
