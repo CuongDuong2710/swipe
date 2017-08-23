@@ -110,7 +110,7 @@ class Deck extends Component {
         return (
           <Animated.View
             key={item.id}
-            style={this.getCardStyle()}
+            style={[this.getCardStyle(), styles.cardStyle, {elevation: 1 }]}
             {...this.state.panResponder.panHandlers}
           >
             {this.props.renderCard(item)}
@@ -118,8 +118,12 @@ class Deck extends Component {
         )
       }
       // render all another cards below
-      return this.props.renderCard(item)
-    })
+      return (
+        <View key={item.id} style={styles.cardStyle}>
+          {this.props.renderCard(item)}
+        </View>
+      )
+    }).reverse()
   }
 
   // 'panHandlers' is an object has a bunch of different callbacks that help intercept (ngăn lại) presses from a user by using the dot dot dot syntax right here. 
@@ -129,6 +133,14 @@ class Deck extends Component {
         {this.renderCards()}
       </View>
     )
+  }
+}
+
+// They're stacked up on top of each other 
+const styles = {
+  cardStyle: {
+    position: 'absolute',
+    width: SCREEN_WIDTH
   }
 }
 
